@@ -4,17 +4,21 @@
 #include <iostream>
 #include <stack>
 #include <queue>
+
 using namespace std;
+
 template <class T>
 class CNode{
 public:
 	T m_data;
+	T m_dirr;
 	CNode<T>* m_nodes[2];
 	int height;
 	int factor;
 	
-	CNode(T _m_data){
-	this->m_data=_m_data;
+	CNode(T _m_data,T _m_dirr){
+	this->m_data = _m_data;
+	this->m_dirr = _m_dirr;
 	m_nodes[0]=m_nodes[1]=NULL;
 	height=1;
 	factor=0;
@@ -28,11 +32,11 @@ public:
 	typedef typename Tr::T T;
 	typedef typename Tr::C C;
 	
-	void add(T);
+	void add(T,T);
 	void printIn(CNode<T>*); 	
 	void printLe(CNode<T>*);
 	bool find(T,CNode<T>**&);
-	bool insert(T);
+	bool insert(T,T);
 	bool remove(T);
 	
 	CNode<T>* root;
@@ -55,21 +59,21 @@ root= NULL;
 }
 
 template <class Tr>
-void AvlTree<Tr>::add(T x){
+void AvlTree<Tr>::add(T x,T y){
 CNode<T>* tmp=root;
 if(!root)
-	root= new CNode<T>(x);
+	root= new CNode<T>(x,y);
 else{
 	while(tmp->m_nodes[cmp(x,tmp->m_data)])
 		tmp=tmp->m_nodes[cmp(x,tmp->m_data)];
-	tmp->m_nodes[cmp(x,tmp->m_data)]= new CNode<T>(x);	
+	tmp->m_nodes[cmp(x,tmp->m_data)]= new CNode<T>(x,y);	
 }
 }
 
 template <class Tr>
 void AvlTree<Tr>::printIn(CNode<T>* tmp){
 	if(tmp->m_nodes[0])printIn(tmp->m_nodes[0]);
-	cout<<tmp->m_data<<" ";
+	cout<<tmp->m_data<<" "<<tmp->m_dirr<<endl;
 	if(tmp->m_nodes[1])printIn(tmp->m_nodes[1]);
 }
 
@@ -80,7 +84,7 @@ void AvlTree<Tr>::printLe(CNode<T>* tmp){
 	while (!m_queue.empty()){
         CNode<T> * tmp = m_queue.front();
         m_queue.pop();
-        cout<<tmp->m_data<<"\n";
+        cout<<tmp->m_data<<" "<<tmp->m_dirr<<endl;
         if (tmp->m_nodes[1]) 
             m_queue.push(tmp->m_nodes[1]);
         if (tmp->m_nodes[0])
@@ -95,12 +99,12 @@ return *tmp!=0;
 }
 
 template <class Tr>
-bool AvlTree<Tr>::insert(T x){
+bool AvlTree<Tr>::insert(T x, T y){
 	stack<CNode<T>**>clear;
 	pila_balanceo=clear;
 	CNode<T>**tmp;
 	if(find(x,tmp)) return 0;
-	CNode<T>* newCNode= new CNode<T>(x);
+	CNode<T>* newCNode= new CNode<T>(x, y);
 	*tmp= newCNode;
 	if(!pila_balanceo.empty()) balance();
 	return 1;

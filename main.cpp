@@ -18,11 +18,11 @@ struct Trait{
 int main()
 {
 	AvlTree<Trait> avltree;
-	avltree.insert(5);
-	avltree.insert(2);
-	avltree.insert(1);
-	avltree.insert(3);
-	avltree.insert(7);
+	avltree.insert(5,10);
+	avltree.insert(2,20);
+	avltree.insert(1,30);
+	avltree.insert(3,15);
+	avltree.insert(7,17);
 	cout<<"print\n";
 	avltree.printLe(avltree.root);	
 	cout<<endl;
