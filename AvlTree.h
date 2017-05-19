@@ -35,7 +35,8 @@ public:
 	void add(T,T);
 	void printIn(CNode<T>*); 	
 	void printLe(CNode<T>*);
-	bool find(T,CNode<T>**&);
+	bool find_node(T,CNode<T>**&);
+	int find(T);
 	bool insert(T,T);
 	bool remove(T);
 	
@@ -92,10 +93,17 @@ void AvlTree<Tr>::printLe(CNode<T>* tmp){
     }
 }
 template <class Tr>
-bool AvlTree<Tr>::find(T x, CNode<T>** &tmp){
+bool AvlTree<Tr>::find_node(T x, CNode<T>** &tmp){
 for(tmp=&root; *tmp and (*tmp)->m_data != x; tmp=&((*tmp)->m_nodes[cmp(x ,(*tmp)->m_data)])) 
 	pila_balanceo.push(tmp);
 return *tmp!=0;
+}
+
+template <class Tr>
+int AvlTree<Tr>::find(T x){
+CNode<T>** tmp;
+if(!find_node(x,tmp)) return -1;
+return (*tmp)->m_dirr;
 }
 
 template <class Tr>
@@ -103,7 +111,7 @@ bool AvlTree<Tr>::insert(T x, T y){
 	stack<CNode<T>**>clear;
 	pila_balanceo=clear;
 	CNode<T>**tmp;
-	if(find(x,tmp)) return 0;
+	if(find_node(x,tmp)) return 0;
 	CNode<T>* newCNode= new CNode<T>(x, y);
 	*tmp= newCNode;
 	if(!pila_balanceo.empty()) balance();
@@ -116,7 +124,7 @@ bool AvlTree<Tr>::remove(T x){
 	pila_balanceo=clear;
 	CNode<T>**tmp;
 	CNode<T>*delete_node;
-	if(!find(x,tmp)) return 0;
+	if(!find_node(x,tmp)) return 0;
 		delete_node=(*tmp);
 	if((*tmp)->m_nodes[0] and (*tmp)->m_nodes[1]){
 		CNode<T>**q=NULL;

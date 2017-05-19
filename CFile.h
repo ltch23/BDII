@@ -24,13 +24,16 @@ public:
     void save_file();
     void generate_file();
     void fill_file(int);
-    string read_file(int);
+    string read_file_p(int);
+    vector<int> read_file(); 
 };
 
 CFile::CFile(){
-    N=100;
+    N=5000;
+    n = 4;
+    m_vector.resize(N) ;
+    m_vector2.resize(N) ;
     zeros = {"0000","000","00","0",""};
-    n = thread::hardware_concurrency();
     m_part=N/n;
 }
 
@@ -43,7 +46,6 @@ void CFile::save_file(){
     file.close();
 }
 
-
 void CFile::fill_file(int n_thread){
     int size=0,i,j;
     for(i=m_part*n_thread,j=N-i-1;i<m_part*(n_thread+1);i++,j--){
@@ -54,6 +56,7 @@ void CFile::fill_file(int n_thread){
         size=m_vector2[i].size();
         m_vector2[i].insert(0,zeros[size-1]);   
     }
+    
 }
 
 void CFile::generate_file(){
@@ -66,7 +69,7 @@ void CFile::generate_file(){
     save_file();
 }
 
-string CFile::read_file(int pos){
+string CFile::read_file_p(int pos){
     string data;
     FILE* ptr_file = fopen("numbers.txt","r");
     fseek(ptr_file,pos,SEEK_SET);
@@ -76,6 +79,19 @@ string CFile::read_file(int pos){
     fclose(ptr_file);
     return data;
 }
-
+vector<int> CFile::read_file(){
+    string line;
+    vector<int> rpta(N);
+    ifstream is_file("numbers.txt");
+    int i=0;
+    while ( getline (is_file,line)){
+        line=line.erase(5,6);
+        rpta[i]=stoi(line);
+        i++;
+    }
+    is_file.close(); 
+    return rpta;
+    
+}
 
 #endif //CFILE
