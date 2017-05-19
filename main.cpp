@@ -1,3 +1,10 @@
+
+/*
+ g++ main.cpp -lpthread -o sgbd
+./sgbd g 50000
+./sgbd f [0-50000]
+*/
+
 #include "AvlTree.h"
 #include "CFile.h"
 
