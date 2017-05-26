@@ -1,0 +1,8 @@
+CREATE TABLE personas (id integer, nombre varchar(20), descripcion varchar(10))
+CREATE TABLE ciudades (id integer, nombre varchar(20), descripcion varchar(10))
+CREATE TABLE animales (id integer, nombre varchar(20), descripcion varchar(10))
+CREATE TABLE vegetales (id integer, nombre varchar(20), descripcion varchar(10))
+#
+INSERT INTO animales VALUES (1,"murcielago","mamifero y volador")
+DELETE FROM vegetales WHERE id=1
+DELETE FROM personas WHERE id=1 AND nombre="Lucas"
