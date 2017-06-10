@@ -36,7 +36,7 @@ public:
 	void printIn(CNode<T>*); 	
 	void printLe(CNode<T>*);
 	bool find_node(T,CNode<T>**&);
-	int find(T);
+	bool find(T,T&);
 	bool insert(T,T);
 	bool remove(T);
 	
@@ -100,10 +100,11 @@ return *tmp!=0;
 }
 
 template <class Tr>
-int AvlTree<Tr>::find(T x){
+bool AvlTree<Tr>::find(T x, T & data){
 CNode<T>** tmp;
-if(!find_node(x,tmp)) return -1;
-return (*tmp)->m_dirr;
+if(!find_node(x,tmp)) return false;
+data= (*tmp)->m_dirr;
+return true; 
 }
 
 template <class Tr>
