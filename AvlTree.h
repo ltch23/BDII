@@ -6,20 +6,21 @@
 #include <queue>
 
 using namespace std;
+typedef unsigned long int N;
 
 template <class T>
 class CNode{
 public:
 	T m_data;
-	T m_dirr;
+	N m_dirr;
 	CNode<T>* m_nodes[2];
 	int height;
 	int factor;
 	
-	CNode(T _m_data,T _m_dirr){
+	CNode(T _m_data, N _m_dirr){
 	this->m_data = _m_data;
 	this->m_dirr = _m_dirr;
-	m_nodes[0]=m_nodes[1]=NULL;
+	m_nodes[0]=m_nodes[1]=nullptr;
 	height=1;
 	factor=0;
 	}
@@ -32,12 +33,13 @@ public:
 	typedef typename Tr::T T;
 	typedef typename Tr::C C;
 	
-	void add(T,T);
+	void add(T,N);
 	void printIn(CNode<T>*); 	
 	void printLe(CNode<T>*);
 	bool find_node(T,CNode<T>**&);
-	bool find(T,T&);
-	bool insert(T,T);
+	bool find_node_(T,CNode<T>**&);
+	bool find(T,N&);
+	bool insert(T,N);
 	bool remove(T);
 	
 	CNode<T>* root;
@@ -60,7 +62,7 @@ root= NULL;
 }
 
 template <class Tr>
-void AvlTree<Tr>::add(T x,T y){
+void AvlTree<Tr>::add(T x,N y){
 CNode<T>* tmp=root;
 if(!root)
 	root= new CNode<T>(x,y);
@@ -99,16 +101,28 @@ for(tmp=&root; *tmp and (*tmp)->m_data != x; tmp=&((*tmp)->m_nodes[cmp(x ,(*tmp)
 return *tmp!=0;
 }
 
+
 template <class Tr>
-bool AvlTree<Tr>::find(T x, T & data){
-CNode<T>** tmp;
-if(!find_node(x,tmp)) return false;
+bool AvlTree<Tr>::find_node_(T x, CNode<T>** &tmp){
+for(tmp=&root; *tmp and (*tmp)->m_data != x; 
+	tmp=&((*tmp)->m_nodes[cmp(x ,(*tmp)->m_data)])){
+	// cout<<"DATA "<<(*tmp)->m_data<<" ";
+	}
+cout<<endl;
+return *tmp!=0;
+}
+
+
+template <class Tr>
+bool AvlTree<Tr>::find(T x, N & data){
+CNode<T>** tmp=nullptr;
+if(!find_node_(x,tmp)) return false;
 data= (*tmp)->m_dirr;
 return true; 
 }
 
 template <class Tr>
-bool AvlTree<Tr>::insert(T x, T y){
+bool AvlTree<Tr>::insert(T x, N y){
 	stack<CNode<T>**>clear;
 	pila_balanceo=clear;
 	CNode<T>**tmp;
