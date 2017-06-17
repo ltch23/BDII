@@ -7,7 +7,6 @@
 #include <vector>
 #include <stdio.h>
 #include <algorithm>    // std::remove_if
-#define len_col 25
 
 typedef string T;
 // typedef unsigned long T;
@@ -24,7 +23,7 @@ public:
     // T m_part;
     // T N;
     int n_bytes;
-    
+    int len_col;
     CFile();
     void save_file();
     void generate_file();
@@ -79,7 +78,7 @@ string CFile::read_file_p(unsigned long pos){
     string data;
     FILE* ptr_file = fopen("numbers.csv","r");
     fseek(ptr_file,pos,SEEK_SET);
-    for (int i=0;i<n_bytes;i++)
+    for (int i=0;i<n_bytes-1;i++)
         data+=getc(ptr_file);
     //int pos=ftell(ptr_file);
     fclose(ptr_file);
@@ -91,6 +90,8 @@ int CFile::number_bytes(){
     getline (is_file,line);
     n_bytes=line.size()+1;
     is_file.close();
+    // len_col=(n_bytes/4)-1;
+    len_col=25;
     return n_bytes;
 }
 

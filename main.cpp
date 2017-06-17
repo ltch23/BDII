@@ -24,20 +24,21 @@ int n_bytes=0;
 template <class T>
 struct Sless{
 	bool operator()(T a, T b){
-		char *cstr_a = new char[a.length() + 1];
-		strcpy(cstr_a, a.c_str());
+		// char *cstr_a = new char[a.length() + 1];
+		// strcpy(cstr_a, a.c_str());
 		
-		char *cstr_b = new char[b.length() + 1];
-		strcpy(cstr_b, b.c_str());
+		// char *cstr_b = new char[b.length() + 1];
+		// strcpy(cstr_b, b.c_str());
 
-		
-		// do stuff
-
-		// delete [] cstr_a;
-		// delete [] cstr_b;
-		return strcmp(cstr_a, cstr_b);
+		// return strcmp(cstr_a, cstr_b);
+		if(b.compare(a)<0)
+			return 0;
+		if(a.compare(b)>0)
+			return 1;
+			
 	}
 };
+
 template <class T>
 struct Lless{
 	bool operator()(T a, T b){
@@ -79,23 +80,24 @@ int main(int argc, char* argv[]){
 	// cout<<"m_vectior"<<endl;
 	// for(int i=0;i<m_vector.size();i++)
 	// 	cout<<m_vector[i]<<" ";
-	cout<<endl;
 	for (N i=0, j=n_bytes; i<m_vector.size();i++,j+=n_bytes)
 		avltree.insert(m_vector[i],j);
 		// avltree.insert(stol(m_vector[i]),j);
 	/* PRINT */
+	
 	cout<<"print\n";
 	avltree.printLe(avltree.root);	
 	cout<<endl;
 	
 	/* FIND */
-	while(op=='1'){
-	cout<<"data:\n";
+
+	// while(data!=0){
+	while(data!="0"){
+	cout<<"data: ";
 	cin.ignore(); 
 	getline(cin,data);
-	// cin>>data;
+
 	cout<<data<<" se encuentra: ";
-	
 	N tmp=0;
 	ti = clock();
 	if(avltree.find(data,tmp)==false){
@@ -103,11 +105,8 @@ int main(int argc, char* argv[]){
 		cout<<tmp<<" contiene: "<<cfile.read_file_p(tmp)<<endl;
 		ti = clock() - ti;
 		cout<<"tiempo: "<<((float)ti)/CLOCKS_PER_SEC<<tmp<<endl;
-		cout<<"(1): continuar: ";cin>>op;
-	if(op!='1') return 0;
+		}
 	}
-	}
-
 
 	return 0;
 }

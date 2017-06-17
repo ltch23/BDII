@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stack>
 #include <queue>
+#include <fstream>
 
 using namespace std;
 typedef unsigned long int N;
@@ -45,6 +46,7 @@ public:
 	CNode<T>* root;
 	C cmp;
 	stack <CNode<T>**> pila_balanceo;
+	string file="tree.txt";
 	
 	void balance();
 	void height(CNode<T>*&);
@@ -54,6 +56,7 @@ public:
 	void LL(CNode<T>**&);
 	void LR(CNode<T>**&);
 	void RL(CNode<T>**&);
+
 };
 
 template <class Tr>
@@ -82,17 +85,24 @@ void AvlTree<Tr>::printIn(CNode<T>* tmp){
 
 template <class Tr>
 void AvlTree<Tr>::printLe(CNode<T>* tmp){
-    queue<CNode<T>*> m_queue;
+    
+	ofstream os_file(file) ;
+ 	queue<CNode<T>*> m_queue;
     m_queue.push(tmp);
+	string line;
 	while (!m_queue.empty()){
         CNode<T> * tmp = m_queue.front();
         m_queue.pop();
-        cout<<tmp->m_data<<" "<<tmp->m_dirr<<endl;
-        if (tmp->m_nodes[1]) 
+        // line=to_string(tmp->m_data)+" "+to_string(tmp->m_dirr)+"\n";
+        line=(tmp->m_data)+" "+to_string(tmp->m_dirr)+"\n";
+		cout<<line;
+        os_file<<line;
+		if (tmp->m_nodes[1]) 
             m_queue.push(tmp->m_nodes[1]);
         if (tmp->m_nodes[0])
             m_queue.push(tmp->m_nodes[0]);
     }
+	os_file.close();
 }
 template <class Tr>
 bool AvlTree<Tr>::find_node(T x, CNode<T>** &tmp){
@@ -104,19 +114,22 @@ return *tmp!=0;
 
 template <class Tr>
 bool AvlTree<Tr>::find_node_(T x, CNode<T>** &tmp){
-for(tmp=&root; *tmp and (*tmp)->m_data != x; 
-	tmp=&((*tmp)->m_nodes[cmp(x ,(*tmp)->m_data)])){
-	// cout<<"DATA "<<(*tmp)->m_data<<" ";
-	}
-cout<<endl;
+for(tmp=&root; *tmp and (*tmp)->m_data != x; tmp=&((*tmp)->m_nodes[!cmp(x ,(*tmp)->m_data)])) 
+	pila_balanceo.push(tmp);
 return *tmp!=0;
 }
-
 
 template <class Tr>
 bool AvlTree<Tr>::find(T x, N & data){
 CNode<T>** tmp=nullptr;
-if(!find_node_(x,tmp)) return false;
+CNode<T>** tmp2=nullptr;
+
+if(find_node_(x,tmp)==false){
+if(find_node(x,tmp2)==false)
+	return false;
+data= (*tmp2)->m_dirr;
+}
+else
 data= (*tmp)->m_dirr;
 return true; 
 }
@@ -253,6 +266,5 @@ void AvlTree<Tr>::balance(){
 		pila_balanceo.pop();
 	}
 }
-
 
 #endif //AvlTree_H
