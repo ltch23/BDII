@@ -115,23 +115,14 @@ return *tmp!=0;
 template <class Tr>
 bool AvlTree<Tr>::find_node_(T x, CNode<T>** &tmp){
 for(tmp=&root; *tmp and (*tmp)->m_data != x; tmp=&((*tmp)->m_nodes[!cmp(x ,(*tmp)->m_data)])) 
-	pila_balanceo.push(tmp);
 return *tmp!=0;
 }
 
 template <class Tr>
 bool AvlTree<Tr>::find(T x, N & data){
-CNode<T>** tmp=nullptr;
-CNode<T>** tmp2=nullptr;
-
-if(find_node_(x,tmp)==false){
-if(find_node(x,tmp2)==false)
-	return false;
-data= (*tmp2)->m_dirr;
-}
-else
-data= (*tmp)->m_dirr;
-return true; 
+	CNode<T>** tmp=nullptr;
+	if(!find_node_(x,tmp)) return false;
+	return true; 
 }
 
 template <class Tr>

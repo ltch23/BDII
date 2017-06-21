@@ -17,28 +17,9 @@ using namespace std;
 typedef string t;
 // typedef unsigned long int t;
 typedef unsigned long int N;
-int col=2;
+int col=1;
 
 int n_bytes=0;
-
-template <class T>
-struct Sless{
-	bool operator()(T a, T b){
-		// char *cstr_a = new char[a.length() + 1];
-		// strcpy(cstr_a, a.c_str());
-		
-		// char *cstr_b = new char[b.length() + 1];
-		// strcpy(cstr_b, b.c_str());
-
-		// return strcmp(cstr_a, cstr_b);
-		if(b.compare(a)<0)
-			return 0;
-		if(a.compare(b)>0)
-			return 1;
-			
-	}
-};
-
 template <class T>
 struct Lless{
 	bool operator()(T a, T b){
@@ -48,7 +29,7 @@ struct Lless{
 
 struct Trait{
 	typedef t T;
-	typedef Sless<T> C;
+	typedef Lless<T> C;
 };
 
 
@@ -96,12 +77,12 @@ int main(int argc, char* argv[]){
 	cout<<"data: ";
 	cin.ignore(); 
 	getline(cin,data);
-
+	// cin>>data;
 	cout<<data<<" se encuentra: ";
 	N tmp=0;
 	ti = clock();
 	if(avltree.find(data,tmp)==false){
-		cout<<"error no encontrado\n"; return 0;}
+		/*cout<<"error no encontrado\n"; return 0;*/}
 		cout<<tmp<<" contiene: "<<cfile.read_file_p(tmp)<<endl;
 		ti = clock() - ti;
 		cout<<"tiempo: "<<((float)ti)/CLOCKS_PER_SEC<<tmp<<endl;

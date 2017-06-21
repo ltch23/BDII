@@ -29,7 +29,7 @@ public:
     void generate_file();
     void fill_file(int);
     int number_bytes();
-    string read_file_p(unsigned long);
+    string read_file_p(unsigned long int);
     vector<T> read_file(int); 
 };
 
@@ -74,7 +74,7 @@ void CFile::generate_file(){
     // save_file();
 }
 
-string CFile::read_file_p(unsigned long pos){
+string CFile::read_file_p(unsigned long int pos){
     string data;
     FILE* ptr_file = fopen("numbers.csv","r");
     fseek(ptr_file,pos,SEEK_SET);
@@ -91,7 +91,7 @@ int CFile::number_bytes(){
     n_bytes=line.size()+1;
     is_file.close();
     // len_col=(n_bytes/4)-1;
-    len_col=25;
+    len_col=17;
     return n_bytes;
 }
 
@@ -104,9 +104,9 @@ vector<T> CFile::read_file(int col ){
         if(col==1)
             line=line.substr((col-1)*len_col,len_col);
         else
-            line=line.substr((col-1)*len_col+1,len_col);
+            line=line.substr(((col-1)*len_col)+col-1,len_col);
         
-    line.erase(remove(line.begin(), line.end(), ' '), line.end());       //delete spaces
+    line.erase(remove(line.begin(), line.end(), ' '), line.end());       
     rpta.push_back(line);
     }
     is_file.close(); 
