@@ -2,6 +2,7 @@
 #define AVLTREE_H
 
 #include <iostream>
+#include <vector>
 #include <stack>
 #include <queue>
 #include <fstream>
@@ -13,14 +14,14 @@ template <class T>
 class CNode{
 public:
 	T m_data;
-	N m_dirr;
+	// N m_dirr;
+	vector<N> m_dirr;
 	CNode<T>* m_nodes[2];
 	int height;
 	int factor;
 	
-	CNode(T _m_data, N _m_dirr){
+	CNode(T _m_data){
 	this->m_data = _m_data;
-	this->m_dirr = _m_dirr;
 	m_nodes[0]=m_nodes[1]=nullptr;
 	height=1;
 	factor=0;
@@ -37,9 +38,10 @@ public:
 	void add(T,N);
 	void printIn(CNode<T>*); 	
 	void printLe(CNode<T>*);
+	void printLe2(CNode<T>*);
 	bool find_node(T,CNode<T>**&);
-	bool find_node_(T,CNode<T>**&);
 	bool find(T,N&);
+	bool find2(T,vector<N>&);
 	bool insert(T,N);
 	bool remove(T);
 	
@@ -85,16 +87,39 @@ void AvlTree<Tr>::printIn(CNode<T>* tmp){
 
 template <class Tr>
 void AvlTree<Tr>::printLe(CNode<T>* tmp){
-    
-	ofstream os_file(file) ;
+	ofstream os_file(file);
  	queue<CNode<T>*> m_queue;
     m_queue.push(tmp);
 	string line;
 	while (!m_queue.empty()){
         CNode<T> * tmp = m_queue.front();
         m_queue.pop();
-        // line=to_string(tmp->m_data)+" "+to_string(tmp->m_dirr)+"\n";
         line=(tmp->m_data)+" "+to_string(tmp->m_dirr)+"\n";
+		cout<<line;
+        os_file<<line;
+		if (tmp->m_nodes[1]) 
+            m_queue.push(tmp->m_nodes[1]);
+        if (tmp->m_nodes[0])
+            m_queue.push(tmp->m_nodes[0]);
+    }
+	os_file.close();
+}
+
+template <class Tr>
+void AvlTree<Tr>::printLe2(CNode<T>* tmp){
+    
+	ofstream os_file(file) ;
+ 	queue<CNode<T>*> m_queue;
+    m_queue.push(tmp);
+	string line,aux;
+	while (!m_queue.empty()){
+        aux="";
+        CNode<T> * tmp = m_queue.front();
+        m_queue.pop();
+		line=(tmp->m_data)+" ";
+		for(int i=0;i<tmp->m_dirr.size();i++)
+			aux+=to_string(tmp->m_dirr[i])+" ";
+        line+=aux+"\n";
 		cout<<line;
         os_file<<line;
 		if (tmp->m_nodes[1]) 
@@ -111,17 +136,19 @@ for(tmp=&root; *tmp and (*tmp)->m_data != x; tmp=&((*tmp)->m_nodes[cmp(x ,(*tmp)
 return *tmp!=0;
 }
 
-
-template <class Tr>
-bool AvlTree<Tr>::find_node_(T x, CNode<T>** &tmp){
-for(tmp=&root; *tmp and (*tmp)->m_data != x; tmp=&((*tmp)->m_nodes[!cmp(x ,(*tmp)->m_data)])) 
-return *tmp!=0;
-}
-
 template <class Tr>
 bool AvlTree<Tr>::find(T x, N & data){
 	CNode<T>** tmp=nullptr;
 	if(!find_node_(x,tmp)) return false;
+	data=(*tmp)->m_dirr;
+	return true; 
+}
+
+template <class Tr>
+bool AvlTree<Tr>::find2(T x, vector<N> & data){
+	CNode<T>** tmp=nullptr;
+	if(!find_node(x,tmp)) return false;
+	data=(*tmp)->m_dirr;
 	return true; 
 }
 
@@ -130,8 +157,13 @@ bool AvlTree<Tr>::insert(T x, N y){
 	stack<CNode<T>**>clear;
 	pila_balanceo=clear;
 	CNode<T>**tmp;
-	if(find_node(x,tmp)) return 0;
-	CNode<T>* newCNode= new CNode<T>(x, y);
+	if(find_node(x,tmp)) {
+		(*tmp)->m_dirr.push_back(y);
+	return 0;
+	}
+		// CNode<T>* newCNode= new CNode<T>(x, yy);
+	CNode<T>* newCNode= new CNode<T>(x);
+	newCNode->m_dirr.push_back(y);
 	*tmp= newCNode;
 	if(!pila_balanceo.empty()) balance();
 	return 1;
