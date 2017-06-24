@@ -40,7 +40,7 @@ int main(int argc, char* argv[]){
 	AvlTree<Trait> avltree;
 	CFile cfile;
 	char op='1';
-	clock_t ti;
+	clock_t t1 ,t2;
 
    	if (argc != 3){
 		cout<<"Mal ingreso"<<endl;
@@ -54,40 +54,46 @@ int main(int argc, char* argv[]){
 		return 0;
 	}
 	else if(*argv[1]=='i'){
-	col=int(strtol(argv[2], NULL, 10));
+		col=int(strtol(argv[2], NULL, 10));
 
 	/* INSERT */
 	n_bytes=cfile.number_bytes();
-	cout<<"n_bytes: "<<n_bytes<<endl;
+	// cout<<"n_bytes: "<<n_bytes<<endl;
 	vector<T> m_vector = cfile.read_file(col);
-	// cout<<"m_vectior"<<endl;
-	// for(int i=0;i<m_vector.size();i++)
-	// 	cout<<m_vector[i]<<" ";
 	for (N i=0, j=n_bytes; i<m_vector.size();i++,j+=n_bytes)
 		avltree.insert(m_vector[i],j);
 		// avltree.insert(stol(m_vector[i]),j);
-	/* PRINT */
 	
+	/* PRINT */
 	cout<<"print\n";
 	avltree.printLe2(avltree.root);	
 	cout<<endl;
 	
 	/* FIND */
-
 	while(data!="0"){
-	cout<<"data: ";
-	cin.ignore(); 
-	getline(cin,data);
-	cout<<data<<" se encuentra: ";
-	vector<N> tmp;
-	// ti = clock();
-	if(avltree.find2(data,tmp)==false){
-	cout<<"error no encontrado\n"; return 0;}
+		cout<<"data: ";
+		cin.ignore(); 
+		getline(cin,data);
+		cout<<data<<" se encuentra: "<<endl;
+		vector<N> tmp;
+		/* t1 */
+		t1 = clock();
+		if(avltree.find2(data,tmp)==false){
+			t1 = clock() - t1;
+			cout<<"error no encontrado\n"; return 0;
+		}
 	
-	for(int i=0;i<tmp.size();i++)
-		cout<<tmp[i]<<" contiene: "<<cfile.read_file_p(tmp[i])<<endl;
-	ti = clock() - ti;
-	cout<<"tiempo: "<<((float)ti)/CLOCKS_PER_SEC<<endl;
+		/* t2 */
+		int i=0;
+		t2 = clock();
+		for(i=0;i<tmp.size();i++)
+			cfile.read_file_p(tmp[i]);
+		cout<<tmp.front()<<" contiene: "<<cfile.read_file_p(tmp.front())<<endl;
+		t2 = clock()-t2;
+		
+			
+		cout<<"tiempo get list: "<<((float)t1)/CLOCKS_PER_SEC<<endl;
+		cout<<"tiempo busqueda en list : "<<((float)t2)/CLOCKS_PER_SEC<<endl;
 		}
 	}
 

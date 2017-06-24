@@ -120,7 +120,7 @@ void AvlTree<Tr>::printLe2(CNode<T>* tmp){
 		for(int i=0;i<tmp->m_dirr.size();i++)
 			aux+=to_string(tmp->m_dirr[i])+" ";
         line+=aux+"\n";
-		cout<<line;
+		// cout<<line;
         os_file<<line;
 		if (tmp->m_nodes[1]) 
             m_queue.push(tmp->m_nodes[1]);
