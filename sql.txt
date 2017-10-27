@@ -1,0 +1,1 @@
+SELECT * FROM Alumno1000000 WHERE ("id_alumno"="1")
